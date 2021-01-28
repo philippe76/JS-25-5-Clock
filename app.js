@@ -27,6 +27,9 @@ const App = () => {
         },
         timeContainer: {
             display: 'flex',
+        },
+        timeLeft: {
+            border: '1px solid grey'
         }
     }
 
@@ -37,19 +40,25 @@ const App = () => {
                     <div id="break-label" style={style.breakContainer}>
                         <p>Break Container</p>
                         <div style={style.timeContainer}>
-                            <i class="fa fa-arrow-circle-o-up"></i>
+                            <i className="fa fa-arrow-circle-o-up" id="break-increment"></i>
                             <p id="break-length">5</p> 
-                            <i class="fa fa-arrow-circle-o-down"></i>
+                            <i className="fa fa-arrow-circle-o-down" id="break-decrement"></i>
                         </div>
                     </div>
                     <div id="session-label" style={style.sessionContainer}>
                         <p>Session Length</p>                        
                         <div style={style.timeContainer}>
-                            <i class="fa fa-arrow-circle-o-up"></i>
+                            <i className="fa fa-arrow-circle-o-up" id="session-increment"></i>
                             <p id="session-length">25</p> 
-                            <i class="fa fa-arrow-circle-o-down"></i>
+                            <i className="fa fa-arrow-circle-o-down" id="session-decrement"></i>
                         </div>
                     </div>
+                </section>
+                <section id="timer-label" style={style.timeLeft}>
+                    <p>Session</p> 
+                    <div id="time-left">25:00</div>
+                    <i className="fa fa-pause" id="start_stop"></i>
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
                 </section>
             </div>
         )
