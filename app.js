@@ -20,13 +20,17 @@ const App = () => {
             setBreakTime(numb+1)
         }
         else {
-            setSessionLength(numb+1)
+            if(sessionLength < 60){
+                setSessionLength(numb+1)
+            }
         }        
     }
 
     const decrement = (numb) => {
         if (numb === breakTime) {
-            setBreakTime(numb-1)
+            if(breakTime > 0){
+                setBreakTime(numb-1)
+            }
         }
         else {
             setSessionLength(numb-1)
