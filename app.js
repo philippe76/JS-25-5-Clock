@@ -98,6 +98,13 @@ const App = () => {
             padding: '0 1rem',
             cursor: 'pointer',
             marginBottom: '1rem'
+        },
+        playPause: {
+            padding: '0 0.2rem'
+        },
+        counterCommand: {
+            display: 'flex',
+            justifyContent: 'center'
         }
     }
 
@@ -125,8 +132,13 @@ const App = () => {
                 <section id="timer-label" style={style.timeLeft}>
                     <p style={style.sessionTitle}>Session</p> 
                     <div id="time-left" style={style.counter}>{timer}</div>
-                    <i className="fa fa-pause" id="start_stop" style={style.icon}></i>
-                    <i className="fa fa-refresh" id="reset" style={style.icon}></i>
+                    <div style={style.counterCommand}>
+                    <div id="start_stop">
+                        <i className="fa fa-play" style={{...style.icon, ...style.playPause}}></i>
+                        <i className="fa fa-pause"  style={{...style.icon, ...style.playPause}}></i>
+                    </div>                    
+                    <i className="fa fa-refresh" id="reset" style={{...style.icon, marginLeft: '1.2rem'}}></i>
+                    </div>
                 </section>
                 <p>by Filip</p>
             </div>
