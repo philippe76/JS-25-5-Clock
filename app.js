@@ -1,16 +1,21 @@
 
 const App = () => {
 
-    const [timer, setTimer] = React.useState(msToTimeString(1500)) 
     const [breakTime, setBreakTime] = React.useState(5) 
     const [sessionLength, setSessionLength] = React.useState(25) 
+    
+    const [totalTimeLeft, setTotalTimeLeft] = React.useState(1500)
+
+    const [timer, setTimer] = React.useState(msToTimeString(totalTimeLeft)) 
+    
+    
     
     function msToTimeString(totalSec) {
     
         let seconds = totalSec % 60;
         let minutes = (totalSec - seconds) / 60;
         
-        seconds = (seconds < 10) && `0${seconds}`
+        seconds = (seconds < 10) ? `0${seconds}` : seconds
     
         return `${minutes}:${seconds}`;
     }
@@ -36,6 +41,16 @@ const App = () => {
             setSessionLength(numb-1)
         }        
     }
+
+    const timerRun = () => {  
+        let timetoDisplay = totalTimeLeft-1
+        setInterval(() => {
+            timetoDisplay--
+            setTimer(msToTimeString(timetoDisplay))    
+            setTotalTimeLeft(timetoDisplay)     
+        },1000)
+    }
+
 
     const style= {
         container: {
@@ -133,7 +148,7 @@ const App = () => {
                     <p style={style.sessionTitle}>Session</p> 
                     <div id="time-left" style={style.counter}>{timer}</div>
                     <div style={style.counterCommand}>
-                    <div id="start_stop">
+                    <div id="start_stop" onClick={timerRun}>
                         <i className="fa fa-play" style={{...style.icon, ...style.playPause}}></i>
                         <i className="fa fa-pause"  style={{...style.icon, ...style.playPause}}></i>
                     </div>                    
