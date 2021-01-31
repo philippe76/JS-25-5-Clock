@@ -6,11 +6,12 @@ const App = () => {
     
     const [totalTimeLeft, setTotalTimeLeft] = React.useState(1500)
 
-    const [timer, setTimer] = React.useState(msToTimeString(totalTimeLeft)) 
+    const [timer, setTimer] = React.useState(secondsToMmss(totalTimeLeft)) 
+    const [running, setRunning] = React.useState(false)
     
     
     
-    function msToTimeString(totalSec) {
+    function secondsToMmss(totalSec) {
     
         let seconds = totalSec % 60;
         let minutes = (totalSec - seconds) / 60;
@@ -42,13 +43,24 @@ const App = () => {
         }        
     }
 
-    const timerRun = () => {  
-        let timetoDisplay = totalTimeLeft-1
-        setInterval(() => {
-            timetoDisplay--
-            setTimer(msToTimeString(timetoDisplay))    
-            setTotalTimeLeft(timetoDisplay)     
-        },1000)
+    const timerRun = () => {    
+      
+        if (!running) {   
+            setRunning(true)         
+            let timetoDisplay = totalTimeLeft
+            var startRunning = setInterval(() => {
+                timetoDisplay--
+                setTimer(secondsToMmss(timetoDisplay))    
+                setTotalTimeLeft(timetoDisplay)     
+            },1000)
+        }
+        
+        else {
+            setRunning(false)
+            clearInterval(startRunning)           
+            console.log('C QUOI CE BORDEL ????!!!!');
+        }          
+        
     }
 
 
