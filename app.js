@@ -43,25 +43,46 @@ const App = () => {
         }        
     }
 
-    const timerRun = () => {    
+    // const timerRun = () => {    
       
-        if (!running) {   
-            setRunning(true)         
+    //     let startRunning;
+
+    //     if (!running) {   
+    //         setRunning(true)         
+    //         let timetoDisplay = totalTimeLeft
+    //         startRunning = setInterval(() => {
+    //             timetoDisplay--
+    //             setTimer(secondsToMmss(timetoDisplay))    
+    //             setTotalTimeLeft(timetoDisplay)  
+    //         },1000)
+    //     }
+        
+    //     else {
+    //         setRunning(false)
+    //         clearInterval(startRunning)           
+    //     }          
+        
+    // }
+
+    React.useEffect(() => {
+        if (running) {        
             let timetoDisplay = totalTimeLeft
             var startRunning = setInterval(() => {
                 timetoDisplay--
                 setTimer(secondsToMmss(timetoDisplay))    
-                setTotalTimeLeft(timetoDisplay)     
+                setTotalTimeLeft(timetoDisplay) 
+                console.log('BLABLABLABLA');    
             },1000)
         }
         
         else {
-            setRunning(false)
-            clearInterval(startRunning)           
-            console.log('C QUOI CE BORDEL ????!!!!');
-        }          
-        
-    }
+            return () => {
+                clearInterval(startRunning)
+                console.log('C QUOI CE BORDEL ????!!!!');
+            }         
+            
+        }         
+    }, [running] )
 
 
     const style= {
@@ -160,7 +181,7 @@ const App = () => {
                     <p style={style.sessionTitle}>Session</p> 
                     <div id="time-left" style={style.counter}>{timer}</div>
                     <div style={style.counterCommand}>
-                    <div id="start_stop" onClick={timerRun}>
+                    <div id="start_stop" onClick={()=> setRunning(!running)}>
                         <i className="fa fa-play" style={{...style.icon, ...style.playPause}}></i>
                         <i className="fa fa-pause"  style={{...style.icon, ...style.playPause}}></i>
                     </div>                    
