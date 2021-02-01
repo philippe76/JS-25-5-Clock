@@ -8,7 +8,7 @@ const App = () => {
 
     const [timer, setTimer] = React.useState(secondsToMmss(totalTimeLeft)) 
     const [running, setRunning] = React.useState(false)
-    // const [intervalNumber, setIntervalNumber] = React.useState()
+    const [intervalNumber, setIntervalNumber] = React.useState()
     
     
     function secondsToMmss(totalSec) {
@@ -43,36 +43,22 @@ const App = () => {
         }        
     }
 
-    // const timerRun = () => {          
-    //     if (!running) {   
-    //         setRunning(true)         
-    //         let timetoDisplay = totalTimeLeft
-    //         let startRunning = setInterval(() => {
-    //             timetoDisplay--
-    //             setTimer(secondsToMmss(timetoDisplay))    
-    //             setTotalTimeLeft(timetoDisplay)  
-    //             setIntervalNumber(startRunning)
-    //         },1000)
-    //     }      
-    //     else {
-    //         setRunning(false)
-    //         clearInterval(intervalNumber)           
-    //     }             
-    // }
-
-    React.useEffect(() => {
-        if (running) {        
+    const timerRun = () => {          
+        if (!running) {   
+            setRunning(true)         
             let timetoDisplay = totalTimeLeft
-            var startRunning = setInterval(() => {
+            let startRunning = setInterval(() => {
                 timetoDisplay--
                 setTimer(secondsToMmss(timetoDisplay))    
                 setTotalTimeLeft(timetoDisplay)  
+                setIntervalNumber(startRunning)
             },1000)
-        }
-        return () => {
-            clearInterval(startRunning)
-        }                     
-    }, [running] )
+        }      
+        else {
+            setRunning(false)
+            clearInterval(intervalNumber)           
+        }             
+    }
 
 
     const style= {
@@ -171,7 +157,7 @@ const App = () => {
                     <p style={style.sessionTitle}>Session</p> 
                     <div id="time-left" style={style.counter}>{timer}</div>
                     <div style={style.counterCommand}>
-                    <div id="start_stop" onClick={() => setRunning(!running)}>
+                    <div id="start_stop" onClick={timerRun}>
                         <i className="fa fa-play" style={{...style.icon, ...style.playPause}}></i>
                         <i className="fa fa-pause"  style={{...style.icon, ...style.playPause}}></i>
                     </div>                    
