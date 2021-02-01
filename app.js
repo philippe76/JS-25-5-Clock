@@ -8,7 +8,7 @@ const App = () => {
 
     const [timer, setTimer] = React.useState(secondsToMmss(totalTimeLeft)) 
     const [running, setRunning] = React.useState(false)
-    
+    // const [intervalNumber, setIntervalNumber] = React.useState()
     
     
     function secondsToMmss(totalSec) {
@@ -43,25 +43,21 @@ const App = () => {
         }        
     }
 
-    // const timerRun = () => {    
-      
-    //     let startRunning;
-
+    // const timerRun = () => {          
     //     if (!running) {   
     //         setRunning(true)         
     //         let timetoDisplay = totalTimeLeft
-    //         startRunning = setInterval(() => {
+    //         let startRunning = setInterval(() => {
     //             timetoDisplay--
     //             setTimer(secondsToMmss(timetoDisplay))    
     //             setTotalTimeLeft(timetoDisplay)  
+    //             setIntervalNumber(startRunning)
     //         },1000)
-    //     }
-        
+    //     }      
     //     else {
     //         setRunning(false)
-    //         clearInterval(startRunning)           
-    //     }          
-        
+    //         clearInterval(intervalNumber)           
+    //     }             
     // }
 
     React.useEffect(() => {
@@ -70,18 +66,12 @@ const App = () => {
             var startRunning = setInterval(() => {
                 timetoDisplay--
                 setTimer(secondsToMmss(timetoDisplay))    
-                setTotalTimeLeft(timetoDisplay) 
-                console.log('BLABLABLABLA');    
+                setTotalTimeLeft(timetoDisplay)  
             },1000)
         }
-        
-        else {
-            return () => {
-                clearInterval(startRunning)
-                console.log('C QUOI CE BORDEL ????!!!!');
-            }         
-            
-        }         
+        return () => {
+            clearInterval(startRunning)
+        }                     
     }, [running] )
 
 
@@ -181,7 +171,7 @@ const App = () => {
                     <p style={style.sessionTitle}>Session</p> 
                     <div id="time-left" style={style.counter}>{timer}</div>
                     <div style={style.counterCommand}>
-                    <div id="start_stop" onClick={()=> setRunning(!running)}>
+                    <div id="start_stop" onClick={() => setRunning(!running)}>
                         <i className="fa fa-play" style={{...style.icon, ...style.playPause}}></i>
                         <i className="fa fa-pause"  style={{...style.icon, ...style.playPause}}></i>
                     </div>                    
