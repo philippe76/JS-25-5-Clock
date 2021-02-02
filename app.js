@@ -6,6 +6,7 @@ const App = () => {
     const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*60)) 
     const [running, setRunning] = React.useState(false)
     const [intervalNumber, setIntervalNumber] = React.useState()
+    const [currentTimer, setcurrentTimer] = React.useState(0)
     
     
     function secondsToMmss(totalSec) {    
@@ -42,11 +43,15 @@ const App = () => {
 
     const timerRun = () => {          
         if (!running) {   
-            setRunning(true)         
-            let timetoDisplay = sessionLength*60
+            setRunning(true)   
+            let timetoDisplay = sessionLength*60    
+            if (currentTimer !== 0) {
+               timetoDisplay = currentTimer 
+            }  
             let startRunning = setInterval(() => {
                 timetoDisplay--
                 setTimer(secondsToMmss(timetoDisplay))    
+                setcurrentTimer(timetoDisplay)
                 setIntervalNumber(startRunning)
             },1000)
         }      
@@ -56,6 +61,13 @@ const App = () => {
         }             
     }
 
+    const resetAll = () => {
+        setRunning(false)
+        clearInterval(intervalNumber)  
+        setBreakTime(5)
+        setSessionLength(25)
+        setTimer(secondsToMmss(1500))
+    }
 
     const style= {
         container: {
@@ -157,7 +169,7 @@ const App = () => {
                         <i className="fa fa-play" style={{...style.icon, ...style.playPause}}></i>
                         <i className="fa fa-pause"  style={{...style.icon, ...style.playPause}}></i>
                     </div>                    
-                    <i className="fa fa-refresh" id="reset" style={{...style.icon, marginLeft: '1.2rem'}}></i>
+                    <i className="fa fa-refresh" id="reset" style={{...style.icon, marginLeft: '1.2rem'}} onClick={resetAll}></i>
                     </div>
                 </section>
                 <p>by Filip</p>
