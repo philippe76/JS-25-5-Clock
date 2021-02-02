@@ -2,24 +2,19 @@
 const App = () => {
 
     const [breakTime, setBreakTime] = React.useState(5) 
-    const [sessionLength, setSessionLength] = React.useState(25) 
-    
-    const [totalTimeLeft, setTotalTimeLeft] = React.useState(1500)
-
-    const [timer, setTimer] = React.useState(secondsToMmss(totalTimeLeft)) 
+    const [sessionLength, setSessionLength] = React.useState(25)     
+    const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*60)) 
     const [running, setRunning] = React.useState(false)
     const [intervalNumber, setIntervalNumber] = React.useState()
     
     
-    function secondsToMmss(totalSec) {
-    
+    function secondsToMmss(totalSec) {    
         let seconds = totalSec % 60;
-        let minutes = (totalSec - seconds) / 60;
-        
-        seconds = (seconds < 10) ? `0${seconds}` : seconds
-    
+        let minutes = (totalSec - seconds) / 60;        
+        seconds = (seconds < 10) ? `0${seconds}` : seconds;    
         return `${minutes}:${seconds}`;
     }
+
 
     const increment = (numb) => {
         if (numb === breakTime) {
@@ -29,8 +24,9 @@ const App = () => {
             if(sessionLength < 60){
                 setSessionLength(numb+1)
             }
-        }        
+        }   
     }
+
 
     const decrement = (numb) => {
         if (numb === breakTime) {
@@ -40,17 +36,17 @@ const App = () => {
         }
         else {
             setSessionLength(numb-1)
-        }        
+        }     
     }
+
 
     const timerRun = () => {          
         if (!running) {   
             setRunning(true)         
-            let timetoDisplay = totalTimeLeft
+            let timetoDisplay = sessionLength*60
             let startRunning = setInterval(() => {
                 timetoDisplay--
                 setTimer(secondsToMmss(timetoDisplay))    
-                setTotalTimeLeft(timetoDisplay)  
                 setIntervalNumber(startRunning)
             },1000)
         }      
