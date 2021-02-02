@@ -5,8 +5,10 @@ const App = () => {
     const [sessionLength, setSessionLength] = React.useState(25)     
     const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*60)) 
     const [running, setRunning] = React.useState(false)
+
     const [intervalNumber, setIntervalNumber] = React.useState()
-    const [currentTimer, setcurrentTimer] = React.useState(0)
+    const [pausedTimer, setpausedTimer] = React.useState(0)
+    const [lastMinute, setLastMinute] = React.useState(false)
     
     
     function secondsToMmss(totalSec) {    
@@ -17,26 +19,28 @@ const App = () => {
     }
 
 
-    const increment = (numb) => {
-        if (numb === breakTime) {
+    const increment = (numb, whichOne) => {
+        if (whichOne === 'break') {
             setBreakTime(numb+1)
         }
         else {
-            if(sessionLength < 60){
+            if (sessionLength < 60){
                 setSessionLength(numb+1)
             }
         }   
     }
 
 
-    const decrement = (numb) => {
-        if (numb === breakTime) {
-            if(breakTime > 0){
+    const decrement = (numb, whichOne) => {
+        if (whichOne === 'break') {
+            if (breakTime > 1){
                 setBreakTime(numb-1)
             }
         }
         else {
-            setSessionLength(numb-1)
+            if (sessionLength > 1){
+                setSessionLength(numb-1)
+            }
         }     
     }
 
@@ -45,13 +49,14 @@ const App = () => {
         if (!running) {   
             setRunning(true)   
             let timetoDisplay = sessionLength*60    
-            if (currentTimer !== 0) {
-               timetoDisplay = currentTimer 
+            if (pausedTimer !== 0) {
+               timetoDisplay = pausedTimer 
             }  
             let startRunning = setInterval(() => {
                 timetoDisplay--
+                timetoDisplay <= 60 && setLastMinute(true)
                 setTimer(secondsToMmss(timetoDisplay))    
-                setcurrentTimer(timetoDisplay)
+                setpausedTimer(timetoDisplay)
                 setIntervalNumber(startRunning)
             },1000)
         }      
@@ -67,6 +72,7 @@ const App = () => {
         setBreakTime(5)
         setSessionLength(25)
         setTimer(secondsToMmss(1500))
+        setLastMinute(false)
     }
 
     const style= {
@@ -119,11 +125,13 @@ const App = () => {
         },
         sessionTitle: {
             fontSize: '1.8rem',
-            marginBottom: '0.7rem'
+            marginBottom: '0.7rem',
+            color:  lastMinute ? '#8B0000': 'white'
         },
         counter: {
             fontSize: '3rem',
-            marginBottom: '1.2rem'
+            marginBottom: '1.2rem',
+            color:  lastMinute ? '#8B0000': 'white'
         },
         icon: {
             fontSize: '1.8rem',
@@ -145,19 +153,19 @@ const App = () => {
                 <h1 style={style.title}>25 + 5 CLOCK</h1>
                 <section style={style.lengthContainer}>
                     <div id="break-label" style={style.breakContainer}>
-                        <p style={style.para}>Break Container</p>
+                        <p style={style.para}>Break Length</p>
                         <div style={style.timeContainer}>
-                            <i className="fa fa-arrow-circle-o-up" id="break-increment" style={style.icon} onClick={()=> increment(breakTime)}></i>
+                            <i className="fa fa-arrow-circle-o-up" id="break-increment" style={style.icon} onClick={()=> increment(breakTime, 'break')}></i>
                             <p id="break-length">{breakTime}</p> 
-                            <i className="fa fa-arrow-circle-o-down" id="break-decrement" style={style.icon} onClick={()=> decrement(breakTime)}></i>
+                            <i className="fa fa-arrow-circle-o-down" id="break-decrement" style={style.icon} onClick={()=> decrement(breakTime, 'break')}></i>
                         </div>
                     </div>
                     <div id="session-label" style={style.sessionContainer}>
                         <p style={style.para}>Session Length</p>                        
                         <div style={style.timeContainer}>
-                            <i className="fa fa-arrow-circle-o-up" id="session-increment" style={style.icon} onClick={()=> increment(sessionLength)}></i>
+                            <i className="fa fa-arrow-circle-o-up" id="session-increment" style={style.icon} onClick={()=> increment(sessionLength, 'length')}></i>
                             <p id="session-length">{sessionLength}</p> 
-                            <i className="fa fa-arrow-circle-o-down" id="session-decrement" style={style.icon} onClick={()=> decrement(sessionLength)}></i>
+                            <i className="fa fa-arrow-circle-o-down" id="session-decrement" style={style.icon} onClick={()=> decrement(sessionLength, 'length')}></i>
                         </div>
                     </div>
                 </section>
