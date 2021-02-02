@@ -2,7 +2,7 @@
 const App = () => {
 
     const [breakTime, setBreakTime] = React.useState(5) 
-    const [sessionLength, setSessionLength] = React.useState(25)     
+    const [sessionLength, setSessionLength] = React.useState(1)     
     const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*60)) 
     const [running, setRunning] = React.useState(false)
 
@@ -74,6 +74,12 @@ const App = () => {
         setTimer(secondsToMmss(1500))
         setLastMinute(false)
     }
+
+    React.useEffect(()=> {
+        if (timer === '0:00') {
+            clearInterval(intervalNumber)    
+        }
+    }, [timer])
 
     const style= {
         container: {
