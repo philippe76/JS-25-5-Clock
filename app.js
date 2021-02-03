@@ -1,12 +1,17 @@
 
 const App = () => {
 
+    const [timeName, setTimeName] = React.useState('Session') 
+    
     const [breakTime, setBreakTime] = React.useState(5) 
     const [sessionLength, setSessionLength] = React.useState(1)     
     const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*60)) 
     const [running, setRunning] = React.useState(false)
 
-    const [intervalNumber, setIntervalNumber] = React.useState()
+    const [sessionNumber, setSessionNumber] = React.useState()
+    const [breakNumber, setBreakNumber] = React.useState()
+
+
     const [pausedTimer, setpausedTimer] = React.useState(0)
     const [lastMinute, setLastMinute] = React.useState(false)
     
@@ -47,37 +52,80 @@ const App = () => {
 
     const timerRun = () => {          
         if (!running) {   
-            setRunning(true)   
-            let timetoDisplay = sessionLength*60    
+            setRunning(true);   
+            let timetoDisplay = sessionLength*60;    
             if (pausedTimer !== 0) {
                timetoDisplay = pausedTimer 
             }  
             let startRunning = setInterval(() => {
-                timetoDisplay--
-                timetoDisplay <= 60 && setLastMinute(true)
-                setTimer(secondsToMmss(timetoDisplay))    
-                setpausedTimer(timetoDisplay)
-                setIntervalNumber(startRunning)
+                timetoDisplay--;
+                timetoDisplay <= 60 && setLastMinute(true);
+                setTimer(secondsToMmss(timetoDisplay));    
+                setpausedTimer(timetoDisplay);
+                setSessionNumber(startRunning);
             },1000)
         }      
         else {
-            setRunning(false)
-            clearInterval(intervalNumber)           
+            setRunning(false);
+            timeName === 'Session' ? clearInterval(sessionNumber) : clearInterval(breakNumber);        
         }             
     }
 
     const resetAll = () => {
-        setRunning(false)
-        clearInterval(intervalNumber)  
-        setBreakTime(5)
-        setSessionLength(25)
-        setTimer(secondsToMmss(1500))
-        setLastMinute(false)
+        setRunning(false);
+        clearInterval(sessionNumber);  
+        setBreakTime(5);
+        setSessionLength(25);
+        setTimer(secondsToMmss(1500));
+        setLastMinute(false);
     }
 
     React.useEffect(()=> {
+        if (timer === '0:00'){
+
+            setLastMinute(false);
+
+            if (timeName === 'Session') {
+                let timetoDisplay = breakTime*60;   
+                setTimeName('Break');
+                let startRunning = setInterval(() => {
+                    timetoDisplay--;
+                    timetoDisplay <= 60 && setLastMinute(true);
+                    setTimer(secondsToMmss(timetoDisplay));
+                    setpausedTimer(timetoDisplay);
+                    setBreakNumber(startRunning);
+                },1000)
+            }
+            else {
+                let timetoDisplay = sessionLength*60;
+                setTimeName('Session');
+                let startRunning = setInterval(() => {
+                    timetoDisplay--;
+                    timetoDisplay <= 60 && setLastMinute(true);
+                    setTimer(secondsToMmss(timetoDisplay));
+                    setpausedTimer(timetoDisplay);
+                    setSessionNumber(startRunning);
+                },1000)
+            }
+
+
+        }
+
+
+
+
         if (timer === '0:00') {
-            clearInterval(intervalNumber)    
+            // timeName === 'Session' ? clearInterval(sessionNumber) : clearInterval(breakNumber);   
+            // let timetoDisplay = breakTime*60; 
+            // setLastMinute(false);
+            // setTimeName('Break');
+            // let startRunning = setInterval(() => {
+            //     timetoDisplay--;
+            //     timetoDisplay <= 60 && setLastMinute(true);
+            //     setTimer(secondsToMmss(timetoDisplay));
+            //     setpausedTimer(timetoDisplay);
+            //     setBreakNumber(startRunning);
+            // },1000)
         }
     }, [timer])
 
@@ -176,7 +224,7 @@ const App = () => {
                     </div>
                 </section>
                 <section id="timer-label" style={style.timeLeft}>
-                    <p style={style.sessionTitle}>Session</p> 
+                    <p style={style.sessionTitle}>{timeName}</p> 
                     <div id="time-left" style={style.counter}>{timer}</div>
                     <div style={style.counterCommand}>
                     <div id="start_stop" onClick={timerRun}>
