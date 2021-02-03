@@ -11,7 +11,6 @@ const App = () => {
     const [sessionNumber, setSessionNumber] = React.useState()
     const [breakNumber, setBreakNumber] = React.useState()
 
-
     const [pausedTimer, setpausedTimer] = React.useState(0)
     const [lastMinute, setLastMinute] = React.useState(false)
     
@@ -83,14 +82,17 @@ const App = () => {
     React.useEffect(()=> {
         if (timer === '0:00'){
 
-            setLastMinute(false);
+            // setpausedTimer(0);
+            setTimeout(() => {
+                setLastMinute(false);
+                timeName === 'Session' ? setTimeName('Break') : setTimeName('Session')
+            }, 1000); 
 
             if (timeName === 'Session') {
                 let timetoDisplay = breakTime*60;   
-                setTimeName('Break');
                 let startRunning = setInterval(() => {
                     timetoDisplay--;
-                    timetoDisplay <= 60 && setLastMinute(true);
+                    timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
                     setTimer(secondsToMmss(timetoDisplay));
                     setpausedTimer(timetoDisplay);
                     setBreakNumber(startRunning);
@@ -98,23 +100,20 @@ const App = () => {
             }
             else {
                 let timetoDisplay = sessionLength*60;
-                setTimeName('Session');
                 let startRunning = setInterval(() => {
                     timetoDisplay--;
-                    timetoDisplay <= 60 && setLastMinute(true);
+                    timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
                     setTimer(secondsToMmss(timetoDisplay));
                     setpausedTimer(timetoDisplay);
                     setSessionNumber(startRunning);
                 },1000)
             }
-
-
         }
+    }, [timer])
 
 
 
-
-        if (timer === '0:00') {
+        // if (timer === '0:00') {
             // timeName === 'Session' ? clearInterval(sessionNumber) : clearInterval(breakNumber);   
             // let timetoDisplay = breakTime*60; 
             // setLastMinute(false);
@@ -126,8 +125,8 @@ const App = () => {
             //     setpausedTimer(timetoDisplay);
             //     setBreakNumber(startRunning);
             // },1000)
-        }
-    }, [timer])
+        // }
+
 
     const style= {
         container: {
@@ -178,12 +177,12 @@ const App = () => {
             textAlign: 'center'
         },
         sessionTitle: {
-            fontSize: '1.8rem',
+            fontSize: '2rem',
             marginBottom: '0.7rem',
             color:  lastMinute ? '#8B0000': 'white'
         },
         counter: {
-            fontSize: '3rem',
+            fontSize: '3.5rem',
             marginBottom: '1.2rem',
             color:  lastMinute ? '#8B0000': 'white'
         },
@@ -204,7 +203,7 @@ const App = () => {
 
     return (
             <div style={style.container}>
-                <h1 style={style.title}>25 + 5 CLOCK</h1>
+                <h1 style={style.title}>POMODORO CLOCK</h1>
                 <section style={style.lengthContainer}>
                     <div id="break-label" style={style.breakContainer}>
                         <p style={style.para}>Break Length</p>
