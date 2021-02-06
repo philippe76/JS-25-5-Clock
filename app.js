@@ -13,6 +13,7 @@ const App = () => {
 
     const [pausedTimer, setpausedTimer] = React.useState(0)
     const [lastMinute, setLastMinute] = React.useState(false)
+    const [counter, setCounter] = React.useState(0)
     
     
     function secondsToMmss(totalSec) {    
@@ -50,9 +51,10 @@ const App = () => {
 
 
     const timerRun = () => {          
-        if (!running) {   
+        if (!running) {  
             setRunning(true);   
             let timetoDisplay = sessionLength*60;    
+            setCounter(counter+1);
             if (pausedTimer !== 0) {
                timetoDisplay = pausedTimer 
             }  
@@ -66,7 +68,13 @@ const App = () => {
         }      
         else {
             setRunning(false);
-            timeName === 'Session' ? clearInterval(sessionNumber) : clearInterval(breakNumber);        
+            if (timeName === 'Session') {
+                clearInterval(sessionNumber)
+            }
+            else {
+                clearInterval(breakNumber)
+            }
+            // timeName === 'Session' ? clearInterval(sessionNumber) : clearInterval(breakNumber);        
         }             
     }
 
@@ -81,14 +89,17 @@ const App = () => {
 
     React.useEffect(()=> {
         if (timer === '0:00'){
-
-            // setpausedTimer(0);
             setTimeout(() => {
                 setLastMinute(false);
                 timeName === 'Session' ? setTimeName('Break') : setTimeName('Session')
             }, 1000); 
 
             if (timeName === 'Session') {
+
+                if (counter === 1) {
+                    setCounter(counter+1)
+                }
+                
                 let timetoDisplay = breakTime*60;   
                 let startRunning = setInterval(() => {
                     timetoDisplay--;
@@ -107,6 +118,10 @@ const App = () => {
                     setpausedTimer(timetoDisplay);
                     setSessionNumber(startRunning);
                 },1000)
+            }
+
+            if (counter === 2) {
+                resetAll()
             }
         }
     }, [timer])
@@ -197,7 +212,8 @@ const App = () => {
         },
         counterCommand: {
             display: 'flex',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            marginTop: '1.6rem'
         }
     }
 
