@@ -85,6 +85,9 @@ const App = () => {
         setSessionLength(25);
         setTimer(secondsToMmss(1500));
         setLastMinute(false);
+        setSessionNumber(undefined);
+        setBreakNumber(undefined);
+        setpausedTimer(0);
     }
 
     React.useEffect(()=> {
@@ -96,18 +99,24 @@ const App = () => {
 
             if (timeName === 'Session') {
 
+                if (counter === 2) {
+                    resetAll()
+                }
+
                 if (counter === 1) {
                     setCounter(counter+1)
+                    let timetoDisplay = breakTime*60;   
+                    let startRunning = setInterval(() => {
+                        timetoDisplay--;
+                        timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
+                        setTimer(secondsToMmss(timetoDisplay));
+                        setpausedTimer(timetoDisplay);
+                        setBreakNumber(startRunning);
+                    },1000)
+
                 }
                 
-                let timetoDisplay = breakTime*60;   
-                let startRunning = setInterval(() => {
-                    timetoDisplay--;
-                    timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
-                    setTimer(secondsToMmss(timetoDisplay));
-                    setpausedTimer(timetoDisplay);
-                    setBreakNumber(startRunning);
-                },1000)
+
             }
             else {
                 let timetoDisplay = sessionLength*60;
@@ -120,9 +129,7 @@ const App = () => {
                 },1000)
             }
 
-            if (counter === 2) {
-                resetAll()
-            }
+
         }
     }, [timer])
 
