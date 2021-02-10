@@ -2,12 +2,12 @@
 const App = () => {
 
     const [timeName, setTimeName] = React.useState('Session') 
+    const [running, setRunning] = React.useState(false)
     
     const [breakTime, setBreakTime] = React.useState(5) 
     const [sessionLength, setSessionLength] = React.useState(1)     
-    const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*60)) 
-    const [running, setRunning] = React.useState(false)
-
+    const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*10)) 
+ 
     const [sessionNumber, setSessionNumber] = React.useState()
     const [breakNumber, setBreakNumber] = React.useState()
 
@@ -35,7 +35,6 @@ const App = () => {
         }   
     }
 
-
     const decrement = (numb, whichOne) => {
         if (whichOne === 'break') {
             if (breakTime > 1){
@@ -53,7 +52,7 @@ const App = () => {
     const timerRun = () => {          
         if (!running) {  
             setRunning(true);   
-            let timetoDisplay = sessionLength*60;    
+            let timetoDisplay = sessionLength*10;    
             setCounter(counter+1);
             if (pausedTimer !== 0) {
                timetoDisplay = pausedTimer 
@@ -64,6 +63,37 @@ const App = () => {
                 setTimer(secondsToMmss(timetoDisplay));    
                 setpausedTimer(timetoDisplay);
                 setSessionNumber(startRunning);
+                if (timetoDisplay === 0) {
+                    console.log('TIMBER !!!!!');
+                    setTimeout(() => {
+                        setLastMinute(false);
+                        timeName === 'Session' ? setTimeName('Break') : setTimeName('Session')
+                    }, 1000); 
+        
+                    if (timeName === 'Session') {
+                            setSessionNumber('1000')
+                            console.log('BREAK IS WORKING!');
+                            let timetoDisplay = breakTime*10;   
+                            let startRunning = setInterval(() => {
+                                timetoDisplay--;
+                                timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
+                                setTimer(secondsToMmss(timetoDisplay));
+                                setpausedTimer(timetoDisplay);
+                                setBreakNumber(startRunning);
+                            },1000)            
+        
+                    }
+                    else {
+                        let timetoDisplay = sessionLength*10;
+                        let startRunning = setInterval(() => {
+                            timetoDisplay--;
+                            timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
+                            setTimer(secondsToMmss(timetoDisplay));
+                            setpausedTimer(timetoDisplay);
+                            setSessionNumber(startRunning);
+                        },1000)
+                    }  
+                }
             },1000)
         }      
         else {
@@ -71,7 +101,8 @@ const App = () => {
             if (timeName === 'Session') {
                 clearInterval(sessionNumber)
             }
-            else {
+            else if (timeName === 'Break') {
+                console.log('HERE !!!!');
                 clearInterval(breakNumber)
             }
             // timeName === 'Session' ? clearInterval(sessionNumber) : clearInterval(breakNumber);        
@@ -90,64 +121,39 @@ const App = () => {
         setpausedTimer(0);
     }
 
-    React.useEffect(()=> {
-        if (timer === '0:00'){
-            setTimeout(() => {
-                setLastMinute(false);
-                timeName === 'Session' ? setTimeName('Break') : setTimeName('Session')
-            }, 1000); 
+    // React.useEffect(()=> {
+        // if (timer === '0:00'){
+        //     setTimeout(() => {
+        //         setLastMinute(false);
+        //         timeName === 'Session' ? setTimeName('Break') : setTimeName('Session')
+        //     }, 1000); 
 
-            if (timeName === 'Session') {
+        //     if (timeName === 'Session') {
+        //             setSessionNumber('1000')
+        //             console.log('BREAK IS WORKING!');
+        //             let timetoDisplay = breakTime*10;   
+        //             let startRunning = setInterval(() => {
+        //                 timetoDisplay--;
+        //                 timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
+        //                 setTimer(secondsToMmss(timetoDisplay));
+        //                 setpausedTimer(timetoDisplay);
+        //                 setBreakNumber(startRunning);
+        //             },1000)            
 
-                if (counter === 2) {
-                    resetAll()
-                }
+        //     }
+        //     else {
+        //         let timetoDisplay = sessionLength*10;
+        //         let startRunning = setInterval(() => {
+        //             timetoDisplay--;
+        //             timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
+        //             setTimer(secondsToMmss(timetoDisplay));
+        //             setpausedTimer(timetoDisplay);
+        //             setSessionNumber(startRunning);
+        //         },1000)
+        //     }
 
-                if (counter === 1) {
-                    setCounter(counter+1)
-                    let timetoDisplay = breakTime*60;   
-                    let startRunning = setInterval(() => {
-                        timetoDisplay--;
-                        timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
-                        setTimer(secondsToMmss(timetoDisplay));
-                        setpausedTimer(timetoDisplay);
-                        setBreakNumber(startRunning);
-                    },1000)
-
-                }
-                
-
-            }
-            else {
-                let timetoDisplay = sessionLength*60;
-                let startRunning = setInterval(() => {
-                    timetoDisplay--;
-                    timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
-                    setTimer(secondsToMmss(timetoDisplay));
-                    setpausedTimer(timetoDisplay);
-                    setSessionNumber(startRunning);
-                },1000)
-            }
-
-
-        }
-    }, [timer])
-
-
-
-        // if (timer === '0:00') {
-            // timeName === 'Session' ? clearInterval(sessionNumber) : clearInterval(breakNumber);   
-            // let timetoDisplay = breakTime*60; 
-            // setLastMinute(false);
-            // setTimeName('Break');
-            // let startRunning = setInterval(() => {
-            //     timetoDisplay--;
-            //     timetoDisplay <= 60 && setLastMinute(true);
-            //     setTimer(secondsToMmss(timetoDisplay));
-            //     setpausedTimer(timetoDisplay);
-            //     setBreakNumber(startRunning);
-            // },1000)
         // }
+    // }, [timer, sessionNumber])
 
 
     const style= {
