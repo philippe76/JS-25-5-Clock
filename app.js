@@ -51,6 +51,41 @@ const App = () => {
     }
 
 
+    const reachZero = () => {
+                            // console.log('TIMBER !!!!!');
+                            setPause(true)
+                            setTimeout(() => {
+                                setLastMinute(false);
+                                timeName === 'Session' ? setTimeName('Break') : setTimeName('Session')                      
+                            }, 1000); 
+                
+                            if (timeName === 'Session') {
+                                    let timetoDisplay = breakTime*10;   
+                                    let breakRunning = setInterval(() => {
+                                        timetoDisplay--;
+                                        timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
+                                        setTimer(secondsToMmss(timetoDisplay));
+                                        setpausedTimer(timetoDisplay);
+                                        setBreakNumber(breakRunning);
+                                        setPause(true)
+                                        // console.log("break is running");
+                                        // console.log("timetoDisplay ", timetoDisplay);
+                                    },1000)            
+                
+                            }
+                            else {
+                                let timetoDisplay = sessionLength*10;
+                                let sessionRunning = setInterval(() => {
+                                    timetoDisplay--;
+                                    timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
+                                    setTimer(secondsToMmss(timetoDisplay));
+                                    setpausedTimer(timetoDisplay);
+                                    setSessionNumber(sessionRunning);
+                                },1000)
+                            }  
+    }
+
+
     const timerRun = () => {   
         
         // IF TIMER IS NOT RUNNING 
@@ -61,50 +96,44 @@ const App = () => {
             if (pausedTimer !== 0) {
                timetoDisplay = pausedTimer 
             }  
+
             // MAKE SESSION TIMER RUNNING 
-            let sessionRunning = setInterval(() => {
-                timetoDisplay--;
-                timetoDisplay <= 60 && setLastMinute(true);
-                setTimer(secondsToMmss(timetoDisplay));    
-                setpausedTimer(timetoDisplay);
-                setSessionNumber(sessionRunning);
-
-                // IF TIMER REACHES 0:00 
-                if (timetoDisplay === 0) {
-
-                    console.log('TIMBER !!!!!');
-                    setPause(true)
-                    setTimeout(() => {
-                        setLastMinute(false);
-                        timeName === 'Session' ? setTimeName('Break') : setTimeName('Session')                      
-                    }, 1000); 
-        
-                    if (timeName === 'Session') {
-                            let timetoDisplay = breakTime*10;   
-                            let breakRunning = setInterval(() => {
-                                timetoDisplay--;
-                                timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
-                                setTimer(secondsToMmss(timetoDisplay));
-                                setpausedTimer(timetoDisplay);
-                                setBreakNumber(breakRunning);
-                                // console.log("break is running");
-                                // console.log("timetoDisplay ", timetoDisplay);
-                            },1000)            
-        
+            if (timeName === 'Session') {
+                let sessionRunning = setInterval(() => {
+                    console.log('SESSION_TIME');
+                    timetoDisplay--;
+                    timetoDisplay <= 60 && setLastMinute(true);
+                    setTimer(secondsToMmss(timetoDisplay));    
+                    setpausedTimer(timetoDisplay);
+                    setSessionNumber(sessionRunning);
+    
+                    // IF TIMER REACHES 0:00 
+                    if (timetoDisplay === 0) {
+                        reachZero()
                     }
-                    else {
-                        let timetoDisplay = sessionLength*10;
-                        let sessionRunning = setInterval(() => {
-                            timetoDisplay--;
-                            timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
-                            setTimer(secondsToMmss(timetoDisplay));
-                            setpausedTimer(timetoDisplay);
-                            setSessionNumber(sessionRunning);
-                        },1000)
-                    }  
-                }
-            },1000)
-        }      
+    
+                },1000)
+            }
+            // MAKE BREAK TIMER RUNNING 
+            else {
+                let breakRunning = setInterval(() => {
+                    console.log('BREAK_TIME');
+                    timetoDisplay--;
+                    timetoDisplay <= 60 && setLastMinute(true);
+                    setTimer(secondsToMmss(timetoDisplay));    
+                    setpausedTimer(timetoDisplay);
+                    setSessionNumber(breakRunning);
+    
+                    // IF TIMER REACHES 0:00 
+                    if (timetoDisplay === 0) {
+                        reachZero()
+                    }
+    
+                },1000)
+            }
+
+        }    
+        // IF TIMER ALREADY RUNNING   
         else {
             setRunning(false);
             if (timeName === 'Session') {
@@ -112,9 +141,10 @@ const App = () => {
                 clearInterval(sessionNumber)
             }
             else if (timeName === 'Break') {
-                console.log('HERE IN THE BREAK !!!!');
-                // console.log('breakNumber: ', breakNumber);
+                // console.log('HERE IN THE BREAK !!!!');
+                console.log('breaknumber', breakNumber);
                 clearInterval(breakNumber)
+                // setPause(false)
             }    
         }             
     }
@@ -133,7 +163,8 @@ const App = () => {
 
     React.useEffect(()=> {
         if (pause) {
-            timeName === 'Session' ? clearInterval(sessionNumber) : clearInterval(breakNumber)         
+            timeName === 'Session' ? clearInterval(sessionNumber) : clearInterval(breakNumber)   
+               
         }
     }, [pause])
 
