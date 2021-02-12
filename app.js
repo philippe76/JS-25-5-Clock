@@ -17,7 +17,7 @@ const App = () => {
 
     const [pause, setPause] = React.useState(false)
     
-    
+    // TURN SECONDS TO MM:SS SCHEMA
     function secondsToMmss(totalSec) {    
         let seconds = totalSec % 60;
         let minutes = (totalSec - seconds) / 60;        
@@ -25,7 +25,7 @@ const App = () => {
         return `${minutes}:${seconds}`;
     }
 
-
+    // INCREMENT TIMER LENGTH
     const increment = (numb, whichOne) => {
         if (whichOne === 'break') {
             setBreakTime(numb+1)
@@ -37,6 +37,7 @@ const App = () => {
         }   
     }
 
+    // DECREMENT TIMER LENGTH
     const decrement = (numb, whichOne) => {
         if (whichOne === 'break') {
             if (breakTime > 1){
@@ -50,7 +51,7 @@ const App = () => {
         }     
     }
 
-
+    // WHEN COUNTER REACH 0:00
     const reachZero = () => {
                             // console.log('TIMBER !!!!!');
                             setPause(true)
@@ -74,6 +75,7 @@ const App = () => {
                 
                             }
                             else {
+                                setCounter(counter+1)
                                 let timetoDisplay = sessionLength*10;
                                 let sessionRunning = setInterval(() => {
                                     timetoDisplay--;
@@ -99,7 +101,7 @@ const App = () => {
 
             // MAKE SESSION TIMER RUNNING 
             if (timeName === 'Session') {
-                let sessionRunning = setInterval(() => {
+                let sessionRunning = setInterval( () => {
                     console.log('SESSION_TIME');
                     timetoDisplay--;
                     timetoDisplay <= 60 && setLastMinute(true);
@@ -110,9 +112,8 @@ const App = () => {
                     // IF TIMER REACHES 0:00 
                     if (timetoDisplay === 0) {
                         reachZero()
-                    }
-    
-                },1000)
+                    }    
+                },1000) 
             }
             // MAKE BREAK TIMER RUNNING 
             else {
@@ -149,6 +150,7 @@ const App = () => {
         }             
     }
 
+    // RESET ALL COUNTERS AND VARIABLES
     const resetAll = () => {
         setRunning(false);
         clearInterval(sessionNumber);  
@@ -163,8 +165,7 @@ const App = () => {
 
     React.useEffect(()=> {
         if (pause) {
-            timeName === 'Session' ? clearInterval(sessionNumber) : clearInterval(breakNumber)   
-               
+            timeName === 'Session' ? clearInterval(sessionNumber) : clearInterval(breakNumber)                
         }
     }, [pause])
 
