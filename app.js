@@ -4,17 +4,17 @@ const App = () => {
     const [timeName, setTimeName] = React.useState('Session') 
     const [running, setRunning] = React.useState(false)
     
-    const [breakLength, setbreakLength] = React.useState(2) 
-    const [sessionLength, setSessionLength] = React.useState(2)     
-    const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*10)) 
- 
+    const [sessionLength, setSessionLength] = React.useState(1)  
+    const [breakLength, setbreakLength] = React.useState(1) 
+   
+    const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*10))  
     const [intervalNumb, setIntervalNumb] = React.useState()
 
     const [pausedTimer, setpausedTimer] = React.useState(0)
     const [lastMinute, setLastMinute] = React.useState(false)
 
     // const [counter, setCounter] = React.useState(0)
-    // const [pause, setPause] = React.useState(false)
+    const [pause, setPause] = React.useState(false)
     
     // TURN SECONDS TO MM:SS SCHEMA
     function secondsToMmss(totalSec) {    
@@ -52,8 +52,8 @@ const App = () => {
 
     // WHEN COUNTER REACH 0:00
     const reachZero = () => {
-                            // console.log('TIMBER !!!!!');
-                            // setPause(true)
+                            console.log('TIMBER !!!!!');
+                            setPause(true)
                             // setCounter(counter+1)
                             
                             setTimeout(() => {
@@ -61,21 +61,23 @@ const App = () => {
                                 timeName === 'Session' ? setTimeName('Break') : setTimeName('Session')                      
                             }, 1000); 
                 
-                            let timetoDisplay = timeName === 'Session' ? sessionLength*10 : breakLength*10; 
+                            let timetoDisplay = timeName === 'Session' ? breakLength*10 : sessionLength*10 ; 
 
                             let timerRunning = setInterval(() => {
+                                console.log('HERE');
                                 timetoDisplay--;
                                 timetoDisplay <= 60 ? setLastMinute(true) : setLastMinute(false);
                                 setTimer(secondsToMmss(timetoDisplay));
                                 setpausedTimer(timetoDisplay);
                                 setIntervalNumb(timerRunning);
+                                console.log('ID: ', timerRunning);
                             },1000)                        
     }
 
 
     const timerRun = () => {   
         
-        // IF TIMER NOT RUNNING 
+        // IF TIMER PAUSED 
         if (!running) {  
 
             setRunning(true);   
@@ -102,6 +104,9 @@ const App = () => {
 
         // IF TIMER RUNNING   
         else {
+
+            console.log(intervalNumb);
+
             setRunning(false);
             clearInterval(intervalNumb);   
         }             
@@ -118,11 +123,11 @@ const App = () => {
         setpausedTimer(0);
     }
 
-    // React.useEffect(()=> {
-    //     if (pause) {
-    //         timeName === 'Session' ? clearInterval(sessionNumber) : clearInterval(breakNumber)                
-    //     }
-    // }, [pause])
+    React.useEffect(()=> {
+        if (pause) {
+           clearInterval(intervalNumb)                
+        }
+    }, [pause])
 
 
     const style= {
