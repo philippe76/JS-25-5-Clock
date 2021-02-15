@@ -138,7 +138,7 @@ const App = () => {
         else {
             setRunning(false);
             if (timeName === 'Session') {
-                // console.log('HERE IN THE SESSION !!!!');
+                console.log('HERE IN THE SESSION !!!!');
                 clearInterval(sessionNumber)
             }
             else if (timeName === 'Break') {
@@ -282,3 +282,7 @@ const App = () => {
 }
 
 ReactDOM.render(<App/>, document.getElementById('app'))
+
+
+
+// pause doesn't work on second session
