@@ -76,19 +76,16 @@ const App = () => {
                timetoDisplay = pausedTimer; 
             }  
             else {
-                setCounter(counter+1);               
+                setCounter(counter+1); 
+                if (!pause){
+                    timetoDisplay = sessionLength*10;
+                }
+                else {
+                    timetoDisplay = breakLength*10; 
+                }          
             }
+           
 
-            if (pause) {
-                timetoDisplay = timeName === 'Session' ? breakLength*10 : sessionLength*10;   
-                console.log('timetoDisplay after 0:00 ', timetoDisplay);    
-            }
-            else {
-                timetoDisplay = timeName === 'Session' ? sessionLength*10 : breakLength*10;
-                console.log('timetoDisplay normal ', timetoDisplay);   
-            }
-
-            
             let timerRunning = setInterval( () => {
 
                 timetoDisplay--;
@@ -99,15 +96,14 @@ const App = () => {
 
                 // IF TIMER REACHES 0:00 
                 if (timetoDisplay === 0) {
-                    setPause(true);
-                    
-                    timetoDisplay = timeName === 'Session' ? breakLength*10 : sessionLength*10;  
+                    setPause(true);                                     
 
                     setTimeout(() => {
                         setLastMinute(false); 
-                        timeName === 'Session' ? setTimeName('Break') : setTimeName('Session');                                         
-                    }, 1000); 
-                    timerRun()
+                        timeName === 'Session' ? setTimeName('Break') : setTimeName('Session');
+                        // timetoDisplay = timeName === 'Session' ? breakLength*10 : sessionLength*10;  
+                        timerRun()                                        
+                    }, 1000);                     
 
                 }    
             },1000) 
@@ -117,7 +113,6 @@ const App = () => {
         else {
             setRunning(false);
             clearInterval(intervalNumb);   
-            console.log(intervalNumb);
         }             
     }
 
