@@ -12,8 +12,9 @@ const App = () => {
     const [pausedTimer, setpausedTimer] = React.useState(0)
     const [lastMinute, setLastMinute] = React.useState(false)
 
-    const [pause, setPause] = React.useState(false)
-    const [counter, setCounter] = React.useState(0)   
+    const [zero, setZero] = React.useState(false)
+    // const [pause, setPause] = React.useState(false)
+    const [counter, setCounter] = React.useState(1)   
 
 
     // TURN SECONDS TO MM:SS SCHEMA
@@ -72,19 +73,18 @@ const App = () => {
             setRunning(true);   
             let timetoDisplay;
 
+            if (counter === 1) {
+                timetoDisplay = sessionLength*10;
+            }
+            else if (counter === 2) {
+                timetoDisplay = breakLength*10;
+            }
+
+
             if (pausedTimer !== 0) {
                timetoDisplay = pausedTimer; 
             }  
-            else {
-                setCounter(counter+1); 
-                if (!pause){
-                    timetoDisplay = sessionLength*10;
-                }
-                else {
-                    timetoDisplay = breakLength*10; 
-                }          
-            }
-           
+
 
             let timerRunning = setInterval( () => {
 
@@ -96,14 +96,20 @@ const App = () => {
 
                 // IF TIMER REACHES 0:00 
                 if (timetoDisplay === 0) {
-                    setPause(true);                                     
+                    // setPause(true);  
+                    // setZero(true);
+                    // setpausedTimer(0)    
+                    
+                    setCounter(2)
 
                     setTimeout(() => {
                         setLastMinute(false); 
                         timeName === 'Session' ? setTimeName('Break') : setTimeName('Session');
                         // timetoDisplay = timeName === 'Session' ? breakLength*10 : sessionLength*10;  
-                        timerRun()                                        
-                    }, 1000);                     
+                                                              
+                    }, 1000);    
+                    
+                    timerRun()  
 
                 }    
             },1000) 
@@ -116,11 +122,11 @@ const App = () => {
         }             
     }
 
-    React.useEffect(()=> {
-        if (pause) {
-           clearInterval(intervalNumb)                
-        }
-    }, [pause])
+    // React.useEffect(()=> {
+    //     if (pause) {
+    //        clearInterval(intervalNumb)                
+    //     }
+    // }, [pause])
 
 
     const style= {
