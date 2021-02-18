@@ -116,6 +116,7 @@ const App = () => {
     React.useEffect(()=> {
 
         if (timer === '0:00') {
+            setRunning(false);
             clearInterval(intervalNumb);
             setTimeout(() => {
                 setLastMinute(false); 
@@ -128,15 +129,17 @@ const App = () => {
                     setTimer(secondsToMmss(sessionLength*10));
                 }
                 setZero(true); 
-            }, 1000);             
+                   
+            }, 1000);              
         }
 
         if (zero) {
             console.log('HEYYY');
-            timerRun();              
+            timerRun();  
+            setZero(false)            
         }
 
-    }, [timer, zero])
+    }, [timer,zero])
 
 
     const style= {
