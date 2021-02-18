@@ -7,19 +7,16 @@ const App = () => {
     const [timeName, setTimeName] = React.useState('Session') 
     const [running, setRunning] = React.useState(false)
     const [intervalNumb, setIntervalNumb] = React.useState()
-    const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*10))  
+    const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*60))  
     
     const [pausedTimer, setpausedTimer] = React.useState()
     const [lastMinute, setLastMinute] = React.useState(false)
 
     const [zero, setZero] = React.useState(false)
-    // const [pause, setPause] = React.useState(false)
     // const [counter, setCounter] = React.useState(1)   
 
-    // const [TotalTime, setTotalTime] = React.useState(sessionLength*10)
 
-
-    // TURN SECONDS TO MM:SS SCHEMA
+    // TURN SECONDS TO MM:SS SCHEMA //
     function secondsToMmss(totalSec) {    
         let seconds = totalSec % 60;
         let minutes = (totalSec - seconds) / 60;        
@@ -27,7 +24,7 @@ const App = () => {
         return `${minutes}:${seconds}`;
     }
 
-    // INCREASE TIMER LENGTH
+    // INCREASE TIMER LENGTH //
     const increment = (numb, whichOne) => {
         if (whichOne === 'break') {
             setbreakLength(numb+1)
@@ -39,7 +36,7 @@ const App = () => {
         }   
     }
 
-    // DECREASE TIMER LENGTH
+    // DECREASE TIMER LENGTH //
     const decrement = (numb, whichOne) => {
         if (whichOne === 'break') {
             if (breakLength > 1){
@@ -53,7 +50,7 @@ const App = () => {
         }     
     }
 
-    // RESET VARIABLES
+    // RESET VARIABLES //
     const resetAll = () => {
         setRunning(false);
         clearInterval(intervalNumb);  
@@ -66,53 +63,39 @@ const App = () => {
 
 
     
-    // TIME RUNNING FUNCTION
+    // TIME RUNNING FUNCTION //
     const timerRun = () => {   
-        
-        console.log('HERE ?');
 
         // IF TIMER NO RUNNING (first launch or paused)
         if (!running) {  
-
-            console.log('ALSO HERE ?');
-
             setRunning(true);   
-            let timetoDisplay = sessionLength*10;
+            let timetoDisplay = sessionLength*60;
 
             if (pausedTimer !== undefined) {
                timetoDisplay = pausedTimer;
             }  
-
             if (zero) {
-                timetoDisplay = breakLength*10
+                timetoDisplay = breakLength*60
             }
 
             let timerRunning = setInterval( () => {
-
                 timetoDisplay--;
                 timetoDisplay <= 60 && setLastMinute(true);
                 setTimer(secondsToMmss(timetoDisplay));    
                 setpausedTimer(timetoDisplay);
                 setIntervalNumb(timerRunning);
-
-            },1000) 
+            },1000)     
         }    
 
         // IF TIMER RUNNING   
         else {
             setRunning(false);
             clearInterval(intervalNumb);   
-            console.log('WHY AM I HERE ????');
         }             
     }
 
-    // React.useEffect(()=> {
-    //     if (pause) {
-    //        clearInterval(intervalNumb)                
-    //     }
-    // }, [pause])
 
-
+    // TIMER IS 0:00 //
     React.useEffect(()=> {
 
         if (timer === '0:00') {
@@ -122,23 +105,19 @@ const App = () => {
                 setLastMinute(false); 
                 if (timeName === 'Session') {
                     setTimeName('Break');
-                    setTimer(secondsToMmss(breakLength*10));
+                    setTimer(secondsToMmss(breakLength*60));
                 }
                 else {
                     setTimeName('Session'); 
-                    setTimer(secondsToMmss(sessionLength*10));
+                    setTimer(secondsToMmss(sessionLength*60));
                 }
-                setZero(true); 
-                   
+                setZero(true);                    
             }, 1000);              
         }
-
         if (zero) {
-            console.log('HEYYY');
             timerRun();  
-            setZero(false)            
+            setZero(false);         
         }
-
     }, [timer,zero])
 
 
