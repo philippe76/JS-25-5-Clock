@@ -9,12 +9,14 @@ const App = () => {
     const [intervalNumb, setIntervalNumb] = React.useState()
     const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*10))  
     
-    const [pausedTimer, setpausedTimer] = React.useState(0)
+    const [pausedTimer, setpausedTimer] = React.useState()
     const [lastMinute, setLastMinute] = React.useState(false)
 
     const [zero, setZero] = React.useState(false)
     // const [pause, setPause] = React.useState(false)
-    const [counter, setCounter] = React.useState(1)   
+    // const [counter, setCounter] = React.useState(1)   
+
+    // const [TotalTime, setTotalTime] = React.useState(sessionLength*10)
 
 
     // TURN SECONDS TO MM:SS SCHEMA
@@ -67,24 +69,23 @@ const App = () => {
     // TIME RUNNING FUNCTION
     const timerRun = () => {   
         
-        // IF TIMER NO RUNNING 
+        console.log('HERE ?');
+
+        // IF TIMER NO RUNNING (first launch or paused)
         if (!running) {  
 
+            console.log('ALSO HERE ?');
+
             setRunning(true);   
-            let timetoDisplay;
+            let timetoDisplay = sessionLength*10;
 
-            if (counter === 1) {
-                timetoDisplay = sessionLength*10;
-            }
-            else if (counter === 2) {
-                timetoDisplay = breakLength*10;
-            }
-
-
-            if (pausedTimer !== 0) {
-               timetoDisplay = pausedTimer; 
+            if (pausedTimer !== undefined) {
+               timetoDisplay = pausedTimer;
             }  
 
+            if (zero) {
+                timetoDisplay = breakLength*10
+            }
 
             let timerRunning = setInterval( () => {
 
@@ -94,24 +95,6 @@ const App = () => {
                 setpausedTimer(timetoDisplay);
                 setIntervalNumb(timerRunning);
 
-                // IF TIMER REACHES 0:00 
-                if (timetoDisplay === 0) {
-                    // setPause(true);  
-                    // setZero(true);
-                    // setpausedTimer(0)    
-                    
-                    setCounter(2)
-
-                    setTimeout(() => {
-                        setLastMinute(false); 
-                        timeName === 'Session' ? setTimeName('Break') : setTimeName('Session');
-                        // timetoDisplay = timeName === 'Session' ? breakLength*10 : sessionLength*10;  
-                                                              
-                    }, 1000);    
-                    
-                    timerRun()  
-
-                }    
             },1000) 
         }    
 
@@ -119,6 +102,7 @@ const App = () => {
         else {
             setRunning(false);
             clearInterval(intervalNumb);   
+            console.log('WHY AM I HERE ????');
         }             
     }
 
@@ -127,6 +111,32 @@ const App = () => {
     //        clearInterval(intervalNumb)                
     //     }
     // }, [pause])
+
+
+    React.useEffect(()=> {
+
+        if (timer === '0:00') {
+            clearInterval(intervalNumb);
+            setTimeout(() => {
+                setLastMinute(false); 
+                if (timeName === 'Session') {
+                    setTimeName('Break');
+                    setTimer(secondsToMmss(breakLength*10));
+                }
+                else {
+                    setTimeName('Session'); 
+                    setTimer(secondsToMmss(sessionLength*10));
+                }
+                setZero(true); 
+            }, 1000);             
+        }
+
+        if (zero) {
+            console.log('HEYYY');
+            timerRun();              
+        }
+
+    }, [timer, zero])
 
 
     const style= {
