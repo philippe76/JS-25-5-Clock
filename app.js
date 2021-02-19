@@ -104,21 +104,23 @@ const App = () => {
             if (counter > 1) {
                 resetAll();
             }
-
-            setRunning(false);
-            clearInterval(intervalNumb);
-            setTimeout(() => {
-                setLastMinute(false); 
-                if (timeName === 'Session') {
-                    setTimeName('Break');
-                    setTimer(secondsToMmss(breakLength*60));
-                }
-                else {
-                    setTimeName('Session'); 
-                    setTimer(secondsToMmss(sessionLength*60));
-                }
-                setZero(true);                    
-            }, 1000);              
+            else {
+                setRunning(false);
+                clearInterval(intervalNumb);
+                setTimeout(() => {
+                    setLastMinute(false); 
+                    if (timeName === 'Session') {
+                        setTimeName('Break');
+                        setTimer(secondsToMmss(breakLength*60));
+                    }
+                    else {
+                        setTimeName('Session'); 
+                        setTimer(secondsToMmss(sessionLength*60));
+                    }
+                    setZero(true);                    
+                }, 1000);  
+            }
+            
         }
         if (zero &&  counter < 2) {
             timerRun();  
