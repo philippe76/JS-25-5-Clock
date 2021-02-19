@@ -13,7 +13,7 @@ const App = () => {
     const [lastMinute, setLastMinute] = React.useState(false)
 
     const [zero, setZero] = React.useState(false)
-    // const [counter, setCounter] = React.useState(1)   
+    const [counter, setCounter] = React.useState(0)   
 
 
     // TURN SECONDS TO MM:SS SCHEMA //
@@ -75,7 +75,8 @@ const App = () => {
                timetoDisplay = pausedTimer;
             }  
             if (zero) {
-                timetoDisplay = breakLength*60
+                timetoDisplay = breakLength*60;
+                setCounter(counter+1)
             }
 
             let timerRunning = setInterval( () => {
@@ -99,6 +100,12 @@ const App = () => {
     React.useEffect(()=> {
 
         if (timer === '0:00') {
+
+            if (counter === 2) {
+                console.log('here !!');
+                resetAll()
+            }
+
             setRunning(false);
             clearInterval(intervalNumb);
             setTimeout(() => {
@@ -118,7 +125,7 @@ const App = () => {
             timerRun();  
             setZero(false);         
         }
-    }, [timer,zero])
+    }, [timer,zero, counter])
 
 
     const style= {
