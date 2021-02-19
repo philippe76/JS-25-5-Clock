@@ -75,7 +75,7 @@ const App = () => {
                timetoDisplay = pausedTimer;
             }  
             if (zero) {
-                timetoDisplay = breakLength*60;
+                timetoDisplay = timeName === 'Session' ? sessionLength*60 : breakLength*60;
                 setCounter(counter+1)
             }
 
