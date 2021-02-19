@@ -101,9 +101,8 @@ const App = () => {
 
         if (timer === '0:00') {
 
-            if (counter === 2) {
-                console.log('here !!');
-                resetAll()
+            if (counter > 1) {
+                resetAll();
             }
 
             setRunning(false);
@@ -121,7 +120,7 @@ const App = () => {
                 setZero(true);                    
             }, 1000);              
         }
-        if (zero) {
+        if (zero &&  counter < 2) {
             timerRun();  
             setZero(false);         
         }
