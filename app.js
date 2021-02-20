@@ -58,9 +58,10 @@ const App = () => {
         clearInterval(intervalNumb);  
         setbreakLength(5);
         setSessionLength(25);
-        setTimer(secondsToMmss(sessionLength*60));
+        setTimer(secondsToMmss(25*60));
         setLastMinute(false);
         setpausedTimer(0);
+        setTimeName('Session');
     }
 
 
