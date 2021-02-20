@@ -27,7 +27,9 @@ const App = () => {
     // INCREASE TIMER LENGTH //
     const increment = (numb, whichOne) => {
         if (whichOne === 'break') {
-            setbreakLength(numb+1)
+            if (breakLength < 60){
+                setbreakLength(numb+1)
+            }
         }
         else {
             if (sessionLength < 60){
@@ -56,7 +58,7 @@ const App = () => {
         clearInterval(intervalNumb);  
         setbreakLength(5);
         setSessionLength(25);
-        setTimer(secondsToMmss(1500));
+        setTimer(secondsToMmss(sessionLength*60));
         setLastMinute(false);
         setpausedTimer(0);
     }
