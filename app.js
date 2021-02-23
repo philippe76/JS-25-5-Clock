@@ -20,7 +20,8 @@ const App = () => {
     function secondsToMmss(totalSec) {    
         let seconds = totalSec % 60;
         let minutes = (totalSec - seconds) / 60;        
-        seconds = (seconds < 10) ? `0${seconds}` : seconds;    
+        seconds = (seconds < 10) ? `0${seconds}` : seconds;  
+        minutes = (minutes < 10) ? `0${minutes}` : minutes;    
         return `${minutes}:${seconds}`;
     }
 
@@ -34,7 +35,12 @@ const App = () => {
         else {
             if (sessionLength < 60){
                 setSessionLength(numb+1);
-                setTimer(`${sessionLength+1}:00`);
+                if (sessionLength < 9) {
+                    setTimer(`0${sessionLength+1}:00`);
+                }
+                else {
+                    setTimer(`${sessionLength+1}:00`);
+                }    
             }
         }   
     }
@@ -49,7 +55,12 @@ const App = () => {
         else {
             if (sessionLength > 1){
                 setSessionLength(numb-1);
-                setTimer(`${sessionLength-1}:00`);
+                if (sessionLength < 11) {
+                    setTimer(`0${sessionLength-1}:00`);
+                }
+                else {
+                    setTimer(`${sessionLength-1}:00`);
+                }                
             }
         }     
     }
@@ -101,10 +112,10 @@ const App = () => {
     }
 
 
-    // TIMER IS 0:00 //
+    // TIMER IS 00:00 //
     React.useEffect(()=> {
 
-        if (timer === '0:00') {
+        if (timer === '00:00') {
 
             if (counter > 1) {
                 resetAll();
@@ -117,13 +128,15 @@ const App = () => {
                     if (timeName === 'Session') {
                         setTimeName('Break');
                         setTimer(secondsToMmss(breakLength*60));
+                        // setTimer(`${breakLength}:00`);
                     }
                     else {
                         setTimeName('Session'); 
                         setTimer(secondsToMmss(sessionLength*60));
+                        // setTimer(`${sessionLength}:00`);
                     }
                     setZero(true);                    
-                }, 1000);  
+                }, 500);  
             }
             
         }
