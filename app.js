@@ -7,7 +7,7 @@ const App = () => {
     const [timeName, setTimeName] = React.useState('Session') 
     const [running, setRunning] = React.useState(false)
     const [intervalNumb, setIntervalNumb] = React.useState()
-    const [timer, setTimer] = React.useState(secondsToMmss(25*60))  
+    const [timer, setTimer] = React.useState(secondsToMmss(sessionLength*60))  
     
     const [pausedTimer, setpausedTimer] = React.useState()
     const [lastMinute, setLastMinute] = React.useState(false)
@@ -58,7 +58,7 @@ const App = () => {
         clearInterval(intervalNumb);  
         setSessionLength(25);
         setbreakLength(5);
-        setTimer(secondsToMmss(25*60));
+        setTimer(secondsToMmss(sessionLength*60));
         setLastMinute(false);
         setpausedTimer();
         setTimeName('Session');
