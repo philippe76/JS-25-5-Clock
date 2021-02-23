@@ -33,7 +33,8 @@ const App = () => {
         }
         else {
             if (sessionLength < 60){
-                setSessionLength(numb+1)
+                setSessionLength(numb+1);
+                setTimer(`${sessionLength+1}:00`);
             }
         }   
     }
@@ -47,7 +48,8 @@ const App = () => {
         }
         else {
             if (sessionLength > 1){
-                setSessionLength(numb-1)
+                setSessionLength(numb-1);
+                setTimer(`${sessionLength-1}:00`);
             }
         }     
     }
@@ -58,7 +60,7 @@ const App = () => {
         clearInterval(intervalNumb);  
         setSessionLength(25);
         setbreakLength(5);
-        setTimer(secondsToMmss(sessionLength*60));
+        setTimer(secondsToMmss(25*60));
         setLastMinute(false);
         setpausedTimer();
         setTimeName('Session');
