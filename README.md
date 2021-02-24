@@ -10,4 +10,4 @@
 
 <img src="code.png" width="30" height="30"> <https://codepen.io/filip76/pen/qBqBjOE>
 
-<!-- <img src="Capture.PNG" height="400px" width="500px" /> -->
+<img src="Capture.PNG" height="400px" width="500px" />
