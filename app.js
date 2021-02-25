@@ -15,6 +15,7 @@ const App = () => {
     const [zero, setZero] = React.useState(false)
     const [counter, setCounter] = React.useState(0)   
 
+    const audioRef = React.useRef()
 
     // TURN SECONDS TO MM:SS SCHEMA //
     function secondsToMmss(totalSec) {    
@@ -116,6 +117,8 @@ const App = () => {
     React.useEffect(()=> {
 
         if (timer === '00:00') {
+
+            audioRef.current.play()
 
             if (counter > 1) {
                 resetAll();
@@ -252,6 +255,7 @@ const App = () => {
                     </div>                    
                     <i className="fa fa-refresh" id="reset" style={{...style.icon, marginLeft: '1.2rem'}} onClick={resetAll}></i>
                     </div>
+                    <audio src="https://bigsoundbank.com/UPLOAD/mp3/1417.mp3" ref={audioRef} id="beep"></audio>
                 </section>
                 <p>by Filip</p>
             </div>
