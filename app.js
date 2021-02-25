@@ -255,7 +255,8 @@ const App = () => {
                     </div>                    
                     <i className="fa fa-refresh" id="reset" style={{...style.icon, marginLeft: '1.2rem'}} onClick={resetAll}></i>
                     </div>
-                    <audio src="https://bigsoundbank.com/UPLOAD/mp3/1417.mp3" ref={audioRef} id="beep"></audio>
+                    {/* <audio src="https://bigsoundbank.com/UPLOAD/mp3/1417.mp3" ref={audioRef} id="beep"></audio> */}
+                    <audio src="https://bigsoundbank.com/UPLOAD/mp3/0925.mp3" ref={audioRef} id="beep"></audio>
                 </section>
                 <p>by Filip</p>
             </div>
