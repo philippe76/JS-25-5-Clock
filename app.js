@@ -28,42 +28,51 @@ const App = () => {
 
     // INCREASE TIMER LENGTH //
     const increment = (numb, whichOne) => {
-        if (whichOne === 'break') {
-            if (breakLength < 60){
-                setbreakLength(numb+1)
-            }
-        }
-        else {
-            if (sessionLength < 60){
-                setSessionLength(numb+1);
-                if (sessionLength < 9) {
-                    setTimer(`0${sessionLength+1}:00`);
+
+        if (counter === 0 && !running && !pausedTimer) {
+
+            if (whichOne === 'break') {
+                if (breakLength < 60){
+                    setbreakLength(numb+1)
                 }
-                else {
-                    setTimer(`${sessionLength+1}:00`);
-                }    
             }
-        }   
+            else {
+                if (sessionLength < 60){
+                    setSessionLength(numb+1);
+                    if (sessionLength < 9) {
+                        setTimer(`0${sessionLength+1}:00`);
+                    }
+                    else {
+                        setTimer(`${sessionLength+1}:00`);
+                    }    
+                }
+            }   
+        }
+
     }
 
     // DECREASE TIMER LENGTH //
     const decrement = (numb, whichOne) => {
-        if (whichOne === 'break') {
-            if (breakLength > 1){
-                setbreakLength(numb-1)
-            }
-        }
-        else {
-            if (sessionLength > 1){
-                setSessionLength(numb-1);
-                if (sessionLength < 11) {
-                    setTimer(`0${sessionLength-1}:00`);
+
+        if (counter === 0 && !running && !pausedTimer) {
+           
+            if (whichOne === 'break') {
+                if (breakLength > 1){
+                    setbreakLength(numb-1)
                 }
-                else {
-                    setTimer(`${sessionLength-1}:00`);
-                }                
             }
-        }     
+            else {
+                if (sessionLength > 1){
+                    setSessionLength(numb-1);
+                    if (sessionLength < 11) {
+                        setTimer(`0${sessionLength-1}:00`);
+                    }
+                    else {
+                        setTimer(`${sessionLength-1}:00`);
+                    }                
+                }
+            }
+        }      
     }
 
     // RESET VARIABLES //
